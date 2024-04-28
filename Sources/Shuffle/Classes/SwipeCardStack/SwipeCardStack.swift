@@ -44,6 +44,11 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
   /// You may wish to modify this property if your card stack is embedded in a `UIScrollView`, for example.
   open var shouldRecognizeVerticalDrag: Bool = true
 
+  /// Return 'false' if you wish to only show the top card in the stack.
+  ///
+  /// You may wish to modify this property if your card stack is embedded in a `UIScrollView`, for example.
+  open var showNextCards: Bool = true
+
   public weak var delegate: SwipeCardStackDelegate?
 
   public weak var dataSource: SwipeCardStackDataSource? {
@@ -63,7 +68,7 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
     return visibleCards.first?.index
   }
 
-  var numberOfVisibleCards: Int = 2
+  var numberOfVisibleCards: Int = showNextCards ? 4 : 2
 
   /// An ordered array containing all pairs of currently visible cards.
   ///
@@ -128,12 +133,41 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
   func layoutCard(_ card: SwipeCard, at position: Int) {
     card.transform = .identity
     card.frame = CGRect(origin: .zero, size: cardContainer.frame.size)
-    card.transform = transform(forCardAtPosition: position)
+    if showNextCards {
+      // Calculate the vertical offset for each card based on its position
+      let verticalOffset: CGFloat
+        
+      switch position {
+        case 0:
+            // Apply a negative translation to the top card
+            verticalOffset = 0
+        default:
+            // Adjust this value to control the spacing between cards
+            verticalOffset = CGFloat(position) * 40.0
+      }
+
+      // Apply the vertical offset and the scale transformation
+      card.transform = CGAffineTransform(translationX: 0, y: verticalOffset)
+            .concatenating(transform(forCardAtPosition: position))
+    }
+    else {
+      card.transform = transform(forCardAtPosition: position)
+    }
     card.isUserInteractionEnabled = position == 0
   }
 
   func scaleFactor(forCardAtPosition position: Int) -> CGPoint {
-    return position == 0 ? CGPoint(x: 1, y: 1) : CGPoint(x: 0.95, y: 0.95)
+    // Adjust the scale factor for each position as desired
+    switch position {
+    case 0:
+        return CGPoint(x: 1, y: 1)
+    case 1:
+        return CGPoint(x: 0.95, y: 0.95)
+    case 2:
+        return CGPoint(x: 0.9, y: 0.9)
+    default:
+        return CGPoint(x: 0.85, y: 0.85)
+    }
   }
 
   func transform(forCardAtPosition position: Int) -> CGAffineTransform {
@@ -152,6 +186,18 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
 
     let scaleX = (1 - percentage) * currentScale.x + percentage * nextScale.x
     let scaleY = (1 - percentage) * currentScale.y + percentage * nextScale.y
+
+    if showNextCards {
+      let verticalOffset: CGFloat
+      switch currentPosition {
+      case 0:
+        verticalOffset = 0
+      default:
+        verticalOffset = CGFloat(currentPosition) * 40.0
+      }
+      return CGAffineTransform(translationX: 0, y: verticalOffset)
+        .concatenating(CGAffineTransform(scaleX: scaleX, y: scaleY))
+    }
 
     return CGAffineTransform(scaleX: scaleX, y: scaleY)
   }
