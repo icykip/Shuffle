@@ -143,7 +143,7 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
             verticalOffset = 0
         default:
             // Adjust this value to control the spacing between cards
-            verticalOffset = CGFloat(position) * 20.0
+            verticalOffset = CGFloat(position) * -20.0
       }
 
       // Apply the vertical offset and the scale transformation
