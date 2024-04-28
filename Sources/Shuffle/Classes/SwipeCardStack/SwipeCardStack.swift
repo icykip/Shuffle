@@ -68,7 +68,7 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
     return visibleCards.first?.index
   }
 
-  var numberOfVisibleCards: Int = 4
+  var numberOfVisibleCards: Int = 3
 
   /// An ordered array containing all pairs of currently visible cards.
   ///
@@ -143,7 +143,7 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
             verticalOffset = 0
         default:
             // Adjust this value to control the spacing between cards
-            verticalOffset = CGFloat(position) * 40.0
+            verticalOffset = CGFloat(position) * 30.0
       }
 
       // Apply the vertical offset and the scale transformation
