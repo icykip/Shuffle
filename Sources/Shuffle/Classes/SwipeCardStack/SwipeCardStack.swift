@@ -143,7 +143,7 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
             verticalOffset = 0
         default:
             // Adjust this value to control the spacing between cards
-            verticalOffset = CGFloat(position) * -20.0
+            verticalOffset = CGFloat(position) * -40.0
       }
 
       // Apply the vertical offset and the scale transformation
@@ -163,8 +163,10 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
         return CGPoint(x: 1, y: 1)
     case 1:
         return CGPoint(x: 0.90, y: 0.90)
-    default:
+    case 2:
         return CGPoint(x: 0.80, y: 0.80)
+    default:
+        return CGPoint(x: 0.75, y: 0.75)
     }
   } 
 
@@ -191,7 +193,7 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
       case 0:
         verticalOffset = 0
       default:
-        verticalOffset = CGFloat(currentPosition) * 20.0
+        verticalOffset = CGFloat(currentPosition) * 40.0
       }
       return CGAffineTransform(translationX: 0, y: verticalOffset)
         .concatenating(CGAffineTransform(scaleX: scaleX, y: scaleY))
