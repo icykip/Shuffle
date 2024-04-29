@@ -275,6 +275,37 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
     }
   }
 
+  public func moveCardToBackOfStack(swipedCard: SwipeCard, animated: Bool) {
+    let cardInitialTransform = swipedCard.transform
+    let cardInitialFrame = swipedCard.frame
+
+    swipedCard.removeFromSuperview()
+    addSubview(swipedCard)
+
+    if animated {
+        swipedCard.transform = cardInitialTransform
+        swipedCard.frame = cardInitialFrame
+
+        UIView.animate(withDuration: 0.5, animations: {
+            swipedCard.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+        }) { _ in
+            UIView.animate(withDuration: 0.3, animations: {
+                swipedCard.transform = .identity
+                swipedCard.frame = CGRect(x: cardStackBackgroundView.frame.maxX - 20,
+                                          y: cardStackBackgroundView.frame.maxY - 20,
+                                          width: 40,
+                                          height: 40)
+            })
+        }
+    } else {
+        swipedCard.transform = .identity
+        swipedCard.frame = CGRect(x: cardStackBackgroundView.frame.maxX - 20,
+                                  y: cardStackBackgroundView.frame.maxY - 20,
+                                  width: 40,
+                                  height: 40)
+    }
+}
+
   /// Returns the most recently swiped card to the top of the card stack.
   /// - Parameter animated: A boolean indicating whether the undo action should be animated.
   public func undoLastSwipe(animated: Bool) {
