@@ -133,9 +133,7 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
   func layoutCard(_ card: SwipeCard, at position: Int) {
     card.transform = .identity
     card.frame = CGRect(origin: .zero, size: cardContainer.frame.size)
-    else {
-      card.transform = transform(forCardAtPosition: position)
-    }
+    card.transform = transform(forCardAtPosition: position)
     card.isUserInteractionEnabled = position == 0
   }
 
