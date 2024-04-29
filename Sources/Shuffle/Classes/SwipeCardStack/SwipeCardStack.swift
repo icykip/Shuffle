@@ -291,16 +291,16 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
         }) { _ in
             UIView.animate(withDuration: 0.3, animations: {
                 swipedCard.transform = .identity
-                swipedCard.frame = CGRect(x: cardContainer.frame.maxX - 20,
-                                          y: cardContainer.frame.maxY - 20,
+                swipedCard.frame = CGRect(x: self.cardContainer.frame.maxX - 20,
+                                          y: self.cardContainer.frame.maxY - 20,
                                           width: 40,
                                           height: 40)
             })
         }
     } else {
         swipedCard.transform = .identity
-        swipedCard.frame = CGRect(x: cardContainer.frame.maxX - 20,
-                                  y: cardContainer.frame.maxY - 20,
+        swipedCard.frame = CGRect(x: self.cardContainer.frame.maxX - 20,
+                                  y: self.cardContainer.frame.maxY - 20,
                                   width: 40,
                                   height: 40)
     }
