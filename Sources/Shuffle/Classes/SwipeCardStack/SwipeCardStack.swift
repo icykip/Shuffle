@@ -496,8 +496,7 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
   }
 
   func cardDidBeginSwipe(_ card: SwipeCard) {
-    //animator.removeBackgroundCardAnimations(self)
-    return
+    animator.removeBackgroundCardAnimations(self)
   }
 
   func cardDidContinueSwipe(_ card: SwipeCard) {
