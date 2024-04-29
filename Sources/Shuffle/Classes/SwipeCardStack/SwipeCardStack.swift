@@ -68,7 +68,7 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
     return visibleCards.first?.index
   }
 
-  var numberOfVisibleCards: Int = 3
+  var numberOfVisibleCards: Int = 4
 
   /// An ordered array containing all pairs of currently visible cards.
   ///
@@ -185,16 +185,25 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
     let scaleX = (1 - percentage) * currentScale.x + percentage * nextScale.x
     let scaleY = (1 - percentage) * currentScale.y + percentage * nextScale.y
 
+    var transform: CGAffineTransform
+    
     if showNextCards {
-      let currentY = CGFloat(currentPosition) * -40.0
-      let nextY = CGFloat(currentPosition - 1) * -40.0
+        let currentY = CGFloat(currentPosition) * -40.0
+        let nextY = CGFloat(currentPosition - 1) * -40.0
+        let verticalOffset = (1 - percentage) * currentY + percentage * nextY
 
-      let verticalOffset = (1 - percentage) * currentY + percentage * nextY
-      return CGAffineTransform(translationX: 0, y: verticalOffset)
-        .concatenating(CGAffineTransform(scaleX: scaleX, y: scaleY))
+        // Make the 4th card invisible initially
+        if currentPosition == 3 && panTranslation == .zero {
+            transform = CGAffineTransform(scaleX: 0, y: 0)
+        } else {
+            transform = CGAffineTransform(translationX: 0, y: verticalOffset)
+                .concatenating(CGAffineTransform(scaleX: scaleX, y: scaleY))
+        }
+    } else {
+        transform = CGAffineTransform(scaleX: scaleX, y: scaleY)
     }
 
-    return CGAffineTransform(scaleX: scaleX, y: scaleY)
+    return transform
   }
 
   // MARK: - Gesture Recognizers
@@ -274,38 +283,6 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
       }
     }
   }
-
-  public func moveCardToBackOfStack(swipedCard: SwipeCard, animated: Bool) {
-    let cardInitialTransform = swipedCard.transform
-    let cardInitialFrame = swipedCard.frame
-
-    swipedCard.removeFromSuperview()
-    cardContainer.addSubview(swipedCard)
-
-    if animated {
-        swipedCard.transform = cardInitialTransform
-        swipedCard.frame = cardInitialFrame
-
-        UIView.animate(withDuration: 0.5, animations: {
-            swipedCard.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
-        }) { _ in
-            UIView.animate(withDuration: 0.3, animations: {
-                swipedCard.transform = .identity
-                swipedCard.frame = CGRect(x: self.cardContainer.frame.maxX - 20,
-                                          y: self.cardContainer.frame.maxY - 20,
-                                          width: 40,
-                                          height: 40)
-            })
-        }
-    } else {
-        swipedCard.transform = .identity
-        swipedCard.frame = CGRect(x: self.cardContainer.frame.maxX - 20,
-                                  y: self.cardContainer.frame.maxY - 20,
-                                  width: 40,
-                                  height: 40)
-    }
-    swipedCard.removeFromSuperview()
-}
 
   /// Returns the most recently swiped card to the top of the card stack.
   /// - Parameter animated: A boolean indicating whether the undo action should be animated.
