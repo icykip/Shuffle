@@ -506,9 +506,8 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
   }
 
   func cardDidCancelSwipe(_ card: SwipeCard) {
-    for (position, currCard) in visibleCards.enumerated() {
-      animator.animateReset(self, topCard: currCard)
-    }
+    animator.animateReset(self, topCard: card)
+    layoutCard(card, at: 0)
   }
 
   func cardDidFinishSwipeAnimation(_ card: SwipeCard) {
