@@ -192,9 +192,12 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
         let nextY = CGFloat(currentPosition - 1) * -40.0
         let verticalOffset = (1 - percentage) * currentY + percentage * nextY
 
-        // Make the 4th card invisible initially
-        if currentPosition == 3 && panTranslation == .zero {
-            transform = CGAffineTransform(scaleX: 0, y: 0)
+        // Make the 4th card invisible initially and fade it in during drag
+        if currentPosition == 3 {
+            let opacity = max(0.0, percentage * 2 - 1.0)
+            transform = CGAffineTransform(translationX: 0, y: verticalOffset)
+                .concatenating(CGAffineTransform(scaleX: scaleX, y: scaleY))
+                .concatenating(CGAffineTransform(alphaComponent: opacity))
         } else {
             transform = CGAffineTransform(translationX: 0, y: verticalOffset)
                 .concatenating(CGAffineTransform(scaleX: scaleX, y: scaleY))
