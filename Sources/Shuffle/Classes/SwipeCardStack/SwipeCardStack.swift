@@ -187,18 +187,18 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
     let scaleX = (1 - percentage) * currentScale.x + percentage * nextScale.x
     let scaleY = (1 - percentage) * currentScale.y + percentage * nextScale.y
 
-    /*if showNextCards {
+    if showNextCards {
       let verticalOffset: CGFloat
       switch currentPosition {
       case 0:
         verticalOffset = 0
       default:
         // Calculate the vertical offset based on the current position and the percentage of drag
-        verticalOffset = CGFloat(currentPosition) * -40.0 + 40.0 * (1-percentage)
+        verticalOffset = 40.0 * (1-percentage) * CGFloat(currentPosition)
       }
       return CGAffineTransform(translationX: 0, y: verticalOffset)
         .concatenating(CGAffineTransform(scaleX: scaleX, y: scaleY))
-    }*/
+    }
 
     return CGAffineTransform(scaleX: scaleX, y: scaleY)
   }
