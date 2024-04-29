@@ -280,7 +280,7 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
     let cardInitialFrame = swipedCard.frame
 
     swipedCard.removeFromSuperview()
-    addSubview(swipedCard)
+    cardContainer.addSubview(swipeCard)
 
     if animated {
         swipedCard.transform = cardInitialTransform
