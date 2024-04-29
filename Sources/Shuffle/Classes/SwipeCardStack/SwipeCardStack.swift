@@ -133,23 +133,6 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
   func layoutCard(_ card: SwipeCard, at position: Int) {
     card.transform = .identity
     card.frame = CGRect(origin: .zero, size: cardContainer.frame.size)
-    if showNextCards {
-      // Calculate the vertical offset for each card based on its position
-      let verticalOffset: CGFloat
-        
-      switch position {
-        case 0:
-            // Apply a negative translation to the top card
-            verticalOffset = 0
-        default:
-            // Adjust this value to control the spacing between cards
-            verticalOffset = CGFloat(position) * -40.0
-      }
-
-      // Apply the vertical offset and the scale transformation
-      card.transform = CGAffineTransform(translationX: 0, y: verticalOffset)
-            .concatenating(transform(forCardAtPosition: position))
-    }
     else {
       card.transform = transform(forCardAtPosition: position)
     }
@@ -172,7 +155,24 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
 
   func transform(forCardAtPosition position: Int) -> CGAffineTransform {
     let cardScaleFactor = scaleFactor(forCardAtPosition: position)
-    return CGAffineTransform(scaleX: cardScaleFactor.x, y: cardScaleFactor.y)
+    var transform = CGAffineTransform(scaleX: cardScaleFactor.x, y: cardScaleFactor.y)
+    if showNextCards {
+      // Calculate the vertical offset for each card based on its position
+      let verticalOffset: CGFloat
+        
+      switch position {
+        case 0:
+            // Apply a negative translation to the top card
+            verticalOffset = 0
+        default:
+            // Adjust this value to control the spacing between cards
+            verticalOffset = CGFloat(position) * -40.0
+      }
+
+      // Apply the vertical offset and the scale transformation
+      transform = transform.concatenating(CGAffineTransform(translationX: 0, y: verticalOffset))
+    }
+    return transform
   }
 
   func backgroundCardDragTransform(topCard: SwipeCard, currentPosition: Int) -> CGAffineTransform {
