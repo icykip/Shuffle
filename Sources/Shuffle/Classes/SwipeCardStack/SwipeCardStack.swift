@@ -187,7 +187,7 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
     let scaleX = (1 - percentage) * currentScale.x + percentage * nextScale.x
     let scaleY = (1 - percentage) * currentScale.y + percentage * nextScale.y
 
-    if showNextCards {
+    /*if showNextCards {
       let verticalOffset: CGFloat
       switch currentPosition {
       case 0:
@@ -198,7 +198,7 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
       }
       return CGAffineTransform(translationX: 0, y: verticalOffset)
         .concatenating(CGAffineTransform(scaleX: scaleX, y: scaleY))
-    }
+    }*/
 
     return CGAffineTransform(scaleX: scaleX, y: scaleY)
   }
@@ -507,7 +507,7 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
 
   func cardDidCancelSwipe(_ card: SwipeCard) {
     animator.animateReset(self, topCard: card)
-    layoutSubviews()
+    //layoutSubviews()
   }
 
   func cardDidFinishSwipeAnimation(_ card: SwipeCard) {
