@@ -280,7 +280,7 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
     let cardInitialFrame = swipedCard.frame
 
     swipedCard.removeFromSuperview()
-    cardContainer.addSubview(swipeCard)
+    cardContainer.addSubview(swipedCard)
 
     if animated {
         swipedCard.transform = cardInitialTransform
@@ -291,19 +291,20 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
         }) { _ in
             UIView.animate(withDuration: 0.3, animations: {
                 swipedCard.transform = .identity
-                swipedCard.frame = CGRect(x: cardStackBackgroundView.frame.maxX - 20,
-                                          y: cardStackBackgroundView.frame.maxY - 20,
+                swipedCard.frame = CGRect(x: cardContainer.frame.maxX - 20,
+                                          y: cardContainer.frame.maxY - 20,
                                           width: 40,
                                           height: 40)
             })
         }
     } else {
         swipedCard.transform = .identity
-        swipedCard.frame = CGRect(x: cardStackBackgroundView.frame.maxX - 20,
-                                  y: cardStackBackgroundView.frame.maxY - 20,
+        swipedCard.frame = CGRect(x: cardContainer.frame.maxX - 20,
+                                  y: cardContainer.frame.maxY - 20,
                                   width: 40,
                                   height: 40)
     }
+    swipedCard.removeFromSuperview()
 }
 
   /// Returns the most recently swiped card to the top of the card stack.
